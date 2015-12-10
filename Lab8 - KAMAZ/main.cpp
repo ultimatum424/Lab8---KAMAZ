@@ -24,6 +24,13 @@ void InicializationCar(StructImage& car1, StructImage& wheel, CarStruct& car)
 	car.acseleration = 0;
 	car.direction = 0;
 }
+void RotationWheel(CarStruct& car)
+{
+	float distance = car.carcase.getPosition().x;
+	float angel_rotation = distance * 360 / CIRCUMFERENCE;
+	car.wheel1.setRotation(angel_rotation);
+	car.wheel2.setRotation(angel_rotation);
+}
 void MoveCar(CarStruct& car)
 {
 	if (car.direction == 1)
@@ -118,13 +125,14 @@ int main()
 {
 	sf::ContextSettings settings;
 	settings.antialiasingLevel = 8;
-	sf::RenderWindow window(sf::VideoMode(WINDOW_SIZE_X, WINDOW_SIZE_Y), "CLOCK", sf::Style::Default, settings);
+	sf::RenderWindow window(sf::VideoMode(WINDOW_SIZE_X, WINDOW_SIZE_Y), "KAMAZ", sf::Style::Default, settings);
 	InicializationCar(car1, wheel, car);
 	while (window.isOpen())
 	{
 		if (Keyboard::isKeyPressed(Keyboard::Space)) system("pause");
 		sf::Event event;
 		SetDirection(car);
+		RotationWheel(car);
 		while (window.pollEvent(event))
 		{
 			if (event.type == sf::Event::Closed)
