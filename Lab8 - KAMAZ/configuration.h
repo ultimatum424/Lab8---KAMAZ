@@ -11,7 +11,7 @@ struct CarStruct
 	Sprite wheel1;
 	Sprite wheel2;
 	float speed;
-	float acseleration;
+	float acceleration;
 	int direction;
 };
 struct StructImage
@@ -27,6 +27,8 @@ StructImage wheel;
 const int WINDOW_SIZE_X = 1300;
 const int WINDOW_SIZE_Y = 600;
 const int RADIUS_WHEEL = 32;
+const int POSITION_FRONT_WHEEL = 281;
+const int POSITION_REAR_WHEEL = 71;
 const float CIRCUMFERENCE = RADIUS_WHEEL * 2 * M_PI;
 const float ACSLERATION = 0.001;
 
