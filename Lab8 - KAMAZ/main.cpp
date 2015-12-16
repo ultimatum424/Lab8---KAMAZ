@@ -1,7 +1,7 @@
 #include "configuration.h"
 #include <iostream>
 
-void InitializationCar(StructImage& car1, StructImage& wheel, CarStruct& car)
+void initializeCar(StructImage& car1, StructImage& wheel, CarStruct& car)
 {
 	car1.image.loadFromFile("../KAMAZ2.png");
 	car1.texture.loadFromImage(car1.image);
@@ -23,7 +23,7 @@ void InitializationCar(StructImage& car1, StructImage& wheel, CarStruct& car)
 	car.acceleration = 0;
 	car.direction = 0;
 }
-void RotationWheel(CarStruct& car)
+void SetRotationWheel(CarStruct& car)
 {
 	float distance = car.carcase.getPosition().x;
 	float angle_rotation = distance * 360 / CIRCUMFERENCE;
@@ -64,7 +64,7 @@ void BreakCar(CarStruct& car)
 		car.wheel2.setPosition(car.wheel2.getPosition().x - car.speed, car.wheel2.getPosition().y);
 	}
 }
-void SetDirection(CarStruct& car)
+void UpdateDirection(CarStruct& car)
 {
 	if (car.speed < 0.0001)
 	{
@@ -76,15 +76,15 @@ void SetDirection(CarStruct& car)
 		if (car.speed == 0)
 		{
 			car.direction = 1;
-			car.acceleration = ACSLERATION;
+			car.acceleration = ACCELERATION;
 		}
 		if (car.direction == 1)
 		{
-			car.acceleration = ACSLERATION;
+			car.acceleration = ACCELERATION;
 		}
 		if (car.direction == -1)
 		{
-			car.acceleration = -ACSLERATION;
+			car.acceleration = -ACCELERATION;
 		}
 		MoveCar(car);
 	}
@@ -93,32 +93,30 @@ void SetDirection(CarStruct& car)
 		if (car.speed == 0)
 		{
 			car.direction = -1;
-			car.acceleration = ACSLERATION;
+			car.acceleration = ACCELERATION;
 		}
 		if (car.direction == -1)
 		{
-			car.acceleration = ACSLERATION;
+			car.acceleration = ACCELERATION;
 		}
 		if (car.direction == 1)
 		{
-			car.acceleration = -ACSLERATION;
+			car.acceleration = -ACCELERATION;
 		}
 		MoveCar(car);
 	}
 	else
 	{
-		car.acceleration = -ACSLERATION;
+		car.acceleration = -ACCELERATION;
 		BreakCar(car);
 	}
 }
 
-void Display(CarStruct car, RenderWindow& window)
+void Draw(CarStruct car, RenderWindow& window)
 {
-	window.clear(Color::White);
 	window.draw(car.carcase);
 	window.draw(car.wheel1);
 	window.draw(car.wheel2);
-	window.display();
 }
 int main()
 {
@@ -126,19 +124,21 @@ int main()
 	settings.antialiasingLevel = 8;
 	
 	sf::RenderWindow window(sf::VideoMode(WINDOW_SIZE_X, WINDOW_SIZE_Y), "KAMAZ", sf::Style::Default, settings);
-	InitializationCar(car1, wheel, car);
+	initializeCar(car1, wheel, car);
 	while (window.isOpen())
 	{
+		window.clear(Color::White);
 		if (Keyboard::isKeyPressed(Keyboard::Space)) system("pause");
 		sf::Event event;
-		SetDirection(car);
-		RotationWheel(car);
+		UpdateDirection(car);
+		SetRotationWheel(car);
 		while (window.pollEvent(event))
 		{
 			if (event.type == sf::Event::Closed)
 				window.close();
 		}
-		Display(car, window);
+		Draw(car, window);
+		window.display();
 	}
 	
 	return 0;
